@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IB makes me crashout</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Theme picker -->
+  <div class="theme-bar">
+    <span class="theme-label">Theme</span>
+    <button class="theme-dot" data-theme="default"   title="Demure"               style="background:linear-gradient(135deg,#2B4B9B,#E8A838)"></button>
+    <button class="theme-dot" data-theme="bloom"     title="Bloom"                style="background:linear-gradient(135deg,#D9185F,#F29F05)"></button>
+    <button class="theme-dot" data-theme="meadow"    title="GTA 4"                style="background:linear-gradient(135deg,#0F4E77,#89A377)"></button>
+    <button class="theme-dot" data-theme="electric"  title="Jenny from the Block" style="background:linear-gradient(135deg,#392989,#D431A1)"></button>
+    <button class="theme-dot" data-theme="sunset"    title="Sunset"               style="background:linear-gradient(135deg,#FA6653,#FECA6D)"></button>
+    <button class="theme-dot" data-theme="dark-rose" title="Dark Rose"            style="background:linear-gradient(135deg,#69021E,#AA0235)"></button>
+    <button class="theme-dot" data-theme="coastal"   title="Coastal"              style="background:linear-gradient(135deg,#1E424D,#77B5D3)"></button>
+    <div class="theme-divider"></div>
+    <button class="darkmode-toggle" id="darkmodeToggle" title="Toggle dark/light mode">
+      <span class="dm-icon" id="dmIcon">☀️</span>
+    </button>
+  </div>
+
+  <header>
+    <div class="header-left">
+      <span class="tag">IB Diploma · Year 1</span>
+      <h1>IB makes me crashout</h1>
+    </div>
+    <div class="header-right">
+      <div class="date-badge" id="dateBadge"></div>
+    </div>
+  </header>
+
+  <!-- PAGE WRAPPER: main content + sidebar -->
+  <div class="page-wrapper">
+
+    <!-- ═══ MAIN CONTENT (comes first in DOM) ═══ -->
+    <div class="main-content">
+
+      <section class="welcome-band">
+        <p class="welcome-text">What are we doing today?</p>
+        <div class="level-tags">
+          <span class="pill hl">HL × 3</span>
+          <span class="pill sl">SL × 3</span>
+        </div>
+      </section>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="subjects">Subjects</button>
+        <button class="tab" data-tab="cas">CAS</button>
+        <button class="tab" data-tab="ee">Extended Essay</button>
+        <button class="tab" data-tab="tok">TOK</button>
+        <button class="tab" data-tab="notes">Notes</button>
+        <button class="tab" data-tab="assignments">Assignments</button>
+        <button class="tab" data-tab="builders">Builders </button>
+        <button class="tab" data-tab="planner">Planner </button>
+        <button class="tab" data-tab="mind">Mindfully </button>
+      </nav>
+
+      <!-- SUBJECTS -->
+      <section class="tab-panel" id="tab-subjects">
+        <div class="subjects-grid" id="subjectsGrid"></div>
+      </section>
+
+      <!-- CAS -->
+      <section class="tab-panel hidden" id="tab-cas">
+        <div class="core-panel">
+          <div class="core-header"><span class="core-icon">🌱</span><div><h2>CAS</h2><p class="core-sub">Creativity · Activity · Service</p></div></div>
+          <div class="cas-strands">
+            <div class="strand-card"><h3>🎨 Creativity</h3><ul class="activity-list" id="cas-creativity"></ul><button class="add-activity-btn" data-strand="creativity">+ Add activity</button></div>
+            <div class="strand-card"><h3>🏃 Activity</h3><ul class="activity-list" id="cas-activity"></ul><button class="add-activity-btn" data-strand="activity">+ Add activity</button></div>
+            <div class="strand-card"><h3>🤝 Service</h3><ul class="activity-list" id="cas-service"></ul><button class="add-activity-btn" data-strand="service">+ Add activity</button></div>
+          </div>
+          <div class="core-notes-section"><h3>CAS Reflections</h3><textarea class="core-notes" id="cas-notes" placeholder="Write your CAS reflections here…"></textarea><button class="save-btn" data-save="cas-notes">Save</button></div>
+        </div>
+      </section>
+
+      <!-- EE -->
+      <section class="tab-panel hidden" id="tab-ee">
+        <div class="core-panel">
+          <div class="core-header"><span class="core-icon">📝</span><div><h2>Extended Essay</h2><p class="core-sub">4000 words · Independent research</p></div></div>
+          <div class="ee-grid">
+            <div class="ee-info-card"><label>Subject</label><input type="text" id="ee-subject" placeholder="e.g. Economics" /></div>
+            <div class="ee-info-card"><label>Research Question</label><input type="text" id="ee-rq" placeholder="Your research question…" /></div>
+            <div class="ee-info-card"><label>Supervisor</label><input type="text" id="ee-supervisor" placeholder="Teacher name…" /></div>
+            <div class="ee-info-card"><label>Word Count</label><input type="number" id="ee-words" placeholder="0" min="0" max="4000"/></div>
+          </div>
+          <div class="ee-progress-section">
+            <div class="progress-label"><span>Word count progress</span><span id="ee-pct">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="ee-bar" style="width:0%"></div></div>
+          </div>
+          <div class="core-notes-section" style="margin-top:1.5rem"><h3>EE Milestones</h3><ul class="topic-list" id="ee-milestones"></ul></div>
+          <div class="core-notes-section"><h3>Notes & Ideas</h3><textarea class="core-notes" id="ee-notes" placeholder="Research ideas, sources, arguments…"></textarea><button class="save-btn" data-save="ee">Save</button></div>
+        </div>
+      </section>
+
+      <!-- TOK -->
+      <section class="tab-panel hidden" id="tab-tok">
+        <div class="core-panel">
+          <div class="core-header"><span class="core-icon">🧠</span><div><h2>Theory of Knowledge</h2><p class="core-sub">TOK Essay · TOK Exhibition</p></div></div>
+          <div class="tok-grid">
+            <div class="tok-card">
+              <h3>📄 TOK Essay</h3>
+              <label>Prescribed Title</label><input type="text" id="tok-title" placeholder="Your chosen title…" />
+              <label>Knowledge Question</label><input type="text" id="tok-kq" placeholder="Your KQ…" />
+              <div class="progress-label" style="margin-top:1.2rem"><span>Essay progress</span><span id="tok-essay-pct">0%</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="tok-essay-bar" style="width:0%"></div></div>
+              <input type="range" id="tok-essay-range" min="0" max="100" value="0" class="range-slider"/>
+            </div>
+            <div class="tok-card">
+              <h3>🖼️ TOK Exhibition</h3>
+              <label>IA Prompt</label><input type="text" id="tok-prompt" placeholder="Your chosen IA prompt…" />
+              <label>Object 1</label><input type="text" id="tok-obj1" placeholder="Describe object 1…" />
+              <label>Object 2</label><input type="text" id="tok-obj2" placeholder="Describe object 2…" />
+              <label>Object 3</label><input type="text" id="tok-obj3" placeholder="Describe object 3…" />
+            </div>
+          </div>
+          <div class="core-notes-section"><h3>TOK Reflections & Ideas</h3><textarea class="core-notes" id="tok-notes" placeholder="AOKs, real-life situations, arguments, counterarguments…"></textarea><button class="save-btn" data-save="tok">Save</button></div>
+        </div>
+      </section>
+
+      <!-- NOTES -->
+      <section class="tab-panel hidden" id="tab-notes">
+        <div class="notes-layout">
+          <aside class="notes-sidebar">
+            <div class="sidebar-top"><span class="sidebar-title">Pages</span><button class="icon-btn" id="addPageBtn">+</button></div>
+            <ul class="page-list" id="pageList"></ul>
+          </aside>
+          <div class="notes-editor" id="notesEditor">
+            <div class="editor-empty" id="editorEmpty"><p>✦ Select a page or create a new one</p></div>
+            <div class="editor-content hidden" id="editorContent">
+              <input type="text" class="page-title-input" id="pageTitleInput" placeholder="Untitled page…" />
+              <div class="block-list" id="blockList"></div>
+              <div class="add-block-bar">
+                <button class="add-block-btn" data-type="text">+ Text</button>
+                <button class="add-block-btn" data-type="bullet">+ List</button>
+                <button class="add-block-btn" data-type="heading">+ Heading</button>
+                <button class="add-block-btn" data-type="divider">+ Divider</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ASSIGNMENTS -->
+      <section class="tab-panel hidden" id="tab-assignments">
+        <div class="assignments-layout">
+          <div class="assignments-header-row">
+            <h2 class="assign-title">Assignments & Deadlines</h2>
+            <button class="save-btn" id="openAddAssign">+ New assignment</button>
+          </div>
+          <div class="assign-filters">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="pending">Pending</button>
+            <button class="filter-pill" data-filter="done">Done</button>
+            <button class="filter-pill" data-filter="overdue">Overdue</button>
+          </div>
+          <div class="assign-list" id="assignList"></div>
+          <div class="assign-form-overlay hidden" id="assignFormOverlay">
+            <div class="assign-form">
+              <h3>New Assignment</h3>
+              <label>Title</label><input type="text" id="af-title" placeholder="e.g. Business IA draft…" />
+              <label>Subject</label>
+              <select id="af-subject">
+                <option value="">— choose —</option>
+                <option>English A</option><option>Business Management</option><option>Economics</option>
+                <option>French B</option><option>ESS</option><option>Mathematics AA</option>
+                <option>CAS</option><option>Extended Essay</option><option>TOK</option><option>Other</option>
+              </select>
+              <label>Type</label>
+              <select id="af-type">
+                <option>Essay</option><option>IA</option><option>Test / Quiz</option>
+                <option>Oral</option><option>Presentation</option><option>Reading</option><option>Other</option>
+              </select>
+              <label>Due date</label><input type="date" id="af-due" />
+              <label>Notes</label><input type="text" id="af-notes" placeholder="Any extra details…" />
+              <div class="assign-form-btns">
+                <button class="save-btn" id="af-submit">Add</button>
+                <button class="cancel-btn" id="af-cancel">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUILDERS -->
+      <section class="tab-panel hidden" id="tab-builders">
+        <div class="builders-intro">
+          <h2 class="builders-title">Builders 🏗️</h2>
+          <p class="builders-sub">Fill these boxes or fail IB. Your choice.</p>
+        </div>
+        <div class="builders-grid" id="buildersGrid">
+          <div class="builder-card" data-builder="econ-ia" style="--bcard:#2B4B9B"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">📈</span><h3>Econ IA Builder</h3><p>Article → Key concept → Diagram → Analysis → Evaluation</p><button class="bcard-btn">Open Builder</button></div></div>
+          <div class="builder-card" data-builder="english-ia" style="--bcard:#E8A838"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">📖</span><h3>English IA Builder</h3><p>Text → Extract → Global issue → Thesis → Analysis</p><button class="bcard-btn">Open Builder</button></div></div>
+          <div class="builder-card" data-builder="math-ia" style="--bcard:#7B5EA7"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">∫</span><h3>Math IA Builder</h3><p>Topic → RQ → Variables → Method → Data → Reflection</p><button class="bcard-btn">Open Builder</button></div></div>
+          <div class="builder-card" data-builder="tok-builder" style="--bcard:#083378"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">🧠</span><h3>TOK Builder</h3><p>Exhibition + Essay — claim, counterclaim, RLS, AOK</p><button class="bcard-btn">Open Builder</button></div></div>
+          <div class="builder-card" data-builder="ee-builder" style="--bcard:#3D7A5C"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">📝</span><h3>EE Builder</h3><p>RQ → Outline → Sources → Argument → Reflection</p><button class="bcard-btn">Open Builder</button></div></div>
+          <div class="builder-card" data-builder="presentation" style="--bcard:#D9185F"><div class="bcard-accent"></div><div class="bcard-body"><span class="bcard-icon">🎤</span><h3>Presentation Builder</h3><p>Topic → Key points → Vocab → Script → Timing</p><button class="bcard-btn">Open Builder</button></div></div>
+        </div>
+      </section>
+
+      <!-- PLANNER -->
+      <section class="tab-panel hidden" id="tab-planner">
+        <div class="planner-layout">
+
+          <!-- Planner header -->
+          <div class="planner-header">
+            <div class="planner-title-row">
+              <h2 class="planner-title">Smart Planner 📅</h2>
+              <div class="planner-view-btns">
+                <button class="pview-btn active" data-view="daily">Daily</button>
+                <button class="pview-btn" data-view="weekly">Weekly</button>
+                <button class="pview-btn" data-view="monthly">Monthly</button>
+              </div>
+            </div>
+            <div class="planner-actions">
+              <button class="ai-plan-btn" id="aiPlanBtn">✨ Generate AI Study Plan</button>
+              <button class="save-btn" id="addRoutineBtn">+ Add Weekly Routine</button>
+            </div>
+          </div>
+
+          <!-- Daily view -->
+          <div class="planner-view" id="pview-daily">
+            <div class="daily-nav">
+              <button class="day-nav-btn" id="dayPrev">‹</button>
+              <span class="day-label" id="dayLabel"></span>
+              <button class="day-nav-btn" id="dayNext">›</button>
+              <button class="today-btn" id="dayToday">Today</button>
+            </div>
+            <div class="daily-grid" id="dailyGrid"></div>
+          </div>
+
+          <!-- Weekly view -->
+          <div class="planner-view hidden" id="pview-weekly">
+            <div class="daily-nav">
+              <button class="day-nav-btn" id="weekPrev">‹</button>
+              <span class="day-label" id="weekLabel"></span>
+              <button class="day-nav-btn" id="weekNext">›</button>
+              <button class="today-btn" id="weekToday">This week</button>
+            </div>
+            <div class="weekly-grid" id="weeklyGrid"></div>
+          </div>
+
+          <!-- Monthly view -->
+          <div class="planner-view hidden" id="pview-monthly">
+            <div class="daily-nav">
+              <button class="day-nav-btn" id="monthPrev">‹</button>
+              <span class="day-label" id="monthLabel"></span>
+              <button class="day-nav-btn" id="monthNext">›</button>
+              <button class="today-btn" id="monthToday">This month</button>
+            </div>
+            <div class="monthly-grid" id="monthlyGrid"></div>
+          </div>
+
+          <!-- AI Plan output panel -->
+          <div class="ai-plan-panel hidden" id="aiPlanPanel">
+            <div class="ai-plan-header">
+              <span>✨ Your AI Study Plan</span>
+              <button class="modal-close" id="aiPlanClose">✕</button>
+            </div>
+            <div class="ai-plan-loading hidden" id="aiPlanLoading">
+              <div class="review-spinner"></div><span>Building your plan…</span>
+            </div>
+            <div class="ai-plan-content" id="aiPlanContent"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- MIND -->
+      <section class="tab-panel hidden" id="tab-mind">
+        <div class="mind-layout">
+          <div class="mind-card verse-card">
+            <div class="verse-header"><span class="mind-icon">✝️</span><span class="verse-day-label">Verse of the Day</span></div>
+            <p class="verse-text" id="verseText"></p>
+            <p class="verse-ref" id="verseRef"></p>
+          </div>
+          <div class="mind-card breath-card">
+            <div class="verse-header"><span class="mind-icon">🌬️</span><span class="verse-day-label">Breathing Exercise</span></div>
+            <div class="breath-circle-wrap">
+              <div class="breath-circle" id="breathCircle"><span class="breath-phase" id="breathPhase">Press start</span></div>
+            </div>
+            <div class="breath-controls">
+              <button class="save-btn" id="breathStart">Start</button>
+              <button class="cancel-btn" id="breathStop">Stop</button>
+            </div>
+            <p class="breath-tip">Box breathing: 4s inhale · 4s hold · 4s exhale · 4s hold</p>
+          </div>
+          <div class="mind-card stress-card">
+            <div class="verse-header"><span class="mind-icon">😤</span><span class="verse-day-label">What's stressing you out?</span></div>
+            <textarea class="mind-textarea" id="stressText" placeholder="Just get it out. No one's judging…"></textarea>
+            <button class="save-btn" data-save="stress">Save</button>
+          </div>
+          <div class="mind-card dump-card">
+            <div class="verse-header"><span class="mind-icon">🧃</span><span class="verse-day-label">Brain dump — thoughts here</span></div>
+            <textarea class="mind-textarea" id="dumpText" placeholder="Random thoughts, ideas, whatever's in your head…"></textarea>
+            <button class="save-btn" data-save="dump">Save</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.main-content -->
+
+    <!-- ═══ RIGHT SIDEBAR (comes second in DOM) ═══ -->
+    <aside class="right-sidebar">
+
+      <!-- Quick Nav card -->
+      <div class="sidebar-card quicknav-card">
+        <div class="scard-accent" style="--scard-color:var(--accent)"></div>
+        <div class="scard-inner">
+          <div class="scard-header">
+            <span class="scard-icon">✦</span>
+            <span class="scard-title">Pick up here</span>
+          </div>
+          <p class="scard-desc" id="lastVisitLabel">Where did you leave off?</p>
+          <div class="quicknav-links" id="quicknavLinks">
+            <button class="qnav-btn" data-tab="subjects">📚 Subjects</button>
+            <button class="qnav-btn" data-tab="assignments">📋 Assignments</button>
+            <button class="qnav-btn" data-tab="builders">🏗️ Builders</button>
+            <button class="qnav-btn" data-tab="ee">📝 Extended Essay</button>
+            <button class="qnav-btn" data-tab="tok">🧠 TOK</button>
+            <button class="qnav-btn" data-tab="cas">🌱 CAS</button>
+            <button class="qnav-btn" data-tab="notes">🗒️ Notes</button>
+            <button class="qnav-btn" data-tab="mind">🌸 Mindfully</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Am I Cooked card -->
+      <div class="sidebar-card cooked-card" id="sidebarCookedBtn">
+        <div class="scard-accent" style="--scard-color:#FA6653"></div>
+        <div class="scard-inner">
+          <div class="scard-header">
+            <span class="scard-icon">🍛</span>
+            <span class="scard-title">Am I Cooked?</span>
+          </div>
+          <p class="scard-desc">Sleep · assignments · stress. Let's find out.</p>
+          <button class="scard-btn" style="--scard-color:#FA6653">Check my situation</button>
+        </div>
+      </div>
+
+      <!-- Lock In card -->
+      <div class="sidebar-card lockin-card" id="sidebarLockinBtn">
+        <div class="scard-accent" style="--scard-color:var(--primary)"></div>
+        <div class="scard-inner">
+          <div class="scard-header">
+            <span class="scard-icon">⏱</span>
+            <span class="scard-title">Lock In</span>
+          </div>
+          <div class="scard-timer" id="sidebarTimer">25:00</div>
+          <p class="scard-timer-label" id="sidebarTimerLabel">Ready to focus</p>
+          <button class="scard-btn" style="--scard-color:var(--primary)">Open timer</button>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- /.page-wrapper -->
+
+  <!-- ═══ ALL OVERLAYS — direct children of body, no stacking context issues ═══ -->
+
+  <!-- Subject Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-header">
+        <span class="modal-icon" id="modalIcon"></span>
+        <div><h2 id="modalTitle"></h2><span class="modal-level" id="modalLevel"></span></div>
+      </div>
+      <div class="modal-section"><h3>Topics</h3><ul class="topic-list" id="topicList"></ul></div>
+      <div class="modal-section">
+        <h3>Resources</h3>
+        <ul class="resource-list" id="resourceList"></ul>
+        <div class="add-resource">
+          <input type="text" id="resourceName" placeholder="Resource name…" />
+          <input type="url" id="resourceUrl" placeholder="Paste link…" />
+          <button id="addResourceBtn">Add</button>
+        </div>
+      </div>
+      <div class="modal-section"><h3>My Notes</h3><textarea id="notesArea" placeholder="Jot anything down…"></textarea><button class="save-btn" id="saveNotes">Save Notes</button></div>
+    </div>
+  </div>
+
+  <!-- Builder Modal -->
+  <div class="modal-overlay" id="builderOverlay">
+    <div class="modal builder-modal" id="builderModal">
+      <button class="modal-close" id="builderClose">✕</button>
+      <div class="builder-modal-header">
+        <h2 id="builderTitle"></h2>
+        <p id="builderSubtitle" class="core-sub"></p>
+      </div>
+      <div id="builderFields"></div>
+      <div class="builder-actions">
+        <div class="builder-wc"><span id="builderWC">0</span> words</div>
+        <div class="builder-btns">
+          <button class="waffle-btn hidden" id="waffleCheck">🧇 Is this waffle?</button>
+          <button class="review-btn" id="aiReviewBtn">✨ AI Review</button>
+          <button class="save-btn" id="builderExport">📋 Compile to text</button>
+          <button class="save-btn" id="builderSave">Save draft</button>
+        </div>
+      </div>
+      <div class="waffle-result hidden" id="waffleResult"></div>
+      <div class="review-panel hidden" id="reviewPanel">
+        <div class="review-header">
+          <span class="review-icon">✨</span>
+          <span class="review-title">AI Reviewer</span>
+          <span class="review-badge" id="reviewScore"></span>
+        </div>
+        <div class="review-loading hidden" id="reviewLoading">
+          <div class="review-spinner"></div>
+          <span>Reading your work…</span>
+        </div>
+        <div id="reviewContent"></div>
+      </div>
+      <div class="compiled-output hidden" id="compiledOutput">
+        <h3>Your compiled text</h3>
+        <textarea id="compiledText" readonly></textarea>
+        <button class="save-btn" id="copyCompiled">Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Am I Cooked -->
+  <div class="cooked-overlay hidden" id="cookedOverlay">
+    <div class="cooked-modal">
+      <button class="modal-close" id="cookedClose">✕</button>
+      <div id="cookedForm">
+        <h2 class="cooked-title">🔥 Am I Cooked?</h2>
+        <p class="cooked-sub">let's assess the situation honestly bestie</p>
+        <div class="cooked-fields">
+          <div class="cooked-field"><label>Hours of sleep last night</label><input type="number" id="ck-sleep" min="0" max="12" placeholder="e.g. 6" /></div>
+          <div class="cooked-field"><label>Assignments due in next 3 days</label><input type="number" id="ck-assign" min="0" placeholder="e.g. 3" /></div>
+          <div class="cooked-field">
+            <label>Stress level (1 = chill, 10 = crying)</label>
+            <input type="range" id="ck-stress" min="1" max="10" value="5" class="range-slider"/>
+            <span id="ck-stress-val">5</span>
+          </div>
+        </div>
+        <button class="save-btn" id="ck-submit" style="width:100%;margin-top:1rem">Judge me 🔮</button>
+      </div>
+      <div class="cooked-result hidden" id="cookedResult">
+        <div class="cooked-verdict" id="cookedVerdict"></div>
+        <p class="cooked-msg" id="cookedMsg"></p>
+        <button class="save-btn" id="ck-again" style="margin-top:1.2rem">Check again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lock In -->
+  <div class="cooked-overlay hidden" id="lockinOverlay">
+    <div class="cooked-modal lockin-modal">
+      <button class="modal-close" id="lockinClose">✕</button>
+      <h2 class="cooked-title">⏱ Lock In</h2>
+      <p class="cooked-sub" id="lockinMode">Study session ready</p>
+      <div class="pomo-display">
+        <div class="pomo-time" id="pomoTime">25:00</div>
+        <div class="pomo-label" id="pomoLabel">Focus</div>
+      </div>
+      <div class="pomo-controls">
+        <button class="save-btn" id="pomoStart">▶ Start studying or else</button>
+        <button class="cancel-btn" id="pomoPause">⏸ Pause</button>
+        <button class="cancel-btn" id="pomoReset">↺ Reset</button>
+      </div>
+      <div class="pomo-mode-btns">
+        <button class="pomo-mode active" data-mins="25" data-label="Focus">25 min focus</button>
+        <button class="pomo-mode" data-mins="5" data-label="Short break">5 min break</button>
+        <button class="pomo-mode" data-mins="15" data-label="Long break">15 min break</button>
+      </div>
+      <div class="pomo-stats">
+        <div class="stat-card"><span class="stat-num" id="statSessions">0</span><span class="stat-lbl">sessions today</span></div>
+        <div class="stat-card"><span class="stat-num" id="statMins">0</span><span class="stat-lbl">mins studied</span></div>
+        <div class="stat-card"><span class="stat-num" id="statStreak">0</span><span class="stat-lbl">day streak</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Routine Modal -->
+  <div class="cooked-overlay hidden" id="routineOverlay">
+    <div class="cooked-modal" style="max-width:480px">
+      <button class="modal-close" id="routineClose">✕</button>
+      <h2 class="cooked-title">📆 Weekly Routine</h2>
+      <p class="cooked-sub">Activities you do every week — these'll show on your planner automatically</p>
+      <div class="routine-list" id="routineList"></div>
+      <div class="routine-add">
+        <select id="routine-day">
+          <option value="0">Monday</option><option value="1">Tuesday</option>
+          <option value="2">Wednesday</option><option value="3">Thursday</option>
+          <option value="4">Friday</option><option value="5">Saturday</option>
+          <option value="6">Sunday</option>
+        </select>
+        <input type="time" id="routine-time" value="09:00"/>
+        <input type="text" id="routine-label" placeholder="e.g. Tennis practice" style="flex:1"/>
+        <button class="save-btn" id="routine-add-btn">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subject Full Page Overlay (Notion style) -->
+  <div class="subject-page-overlay hidden" id="subjectPageOverlay">
+    <div class="subject-page">
+
+      <!-- Subject page header -->
+      <div class="sp-topbar">
+        <button class="sp-back-btn" id="spBack">← Back</button>
+        <div class="sp-subject-badge" id="spBadge"></div>
+      </div>
+
+      <div class="sp-layout">
+
+        <!-- Left sidebar (always visible) -->
+        <aside class="sp-sidebar">
+          <div class="sp-sidebar-title" id="spSidebarTitle"></div>
+          <nav class="sp-nav">
+            <button class="sp-nav-btn active" data-sp="overview">📋 Overview</button>
+            <button class="sp-nav-btn" data-sp="notes">📝 Notes</button>
+            <button class="sp-nav-btn" data-sp="questions">❓ Questions</button>
+            <button class="sp-nav-btn" data-sp="resources">🔗 Resources</button>
+          </nav>
+          <div class="sp-progress-mini">
+            <div class="sp-progress-label">Syllabus <span id="spProgressPct">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="spProgressBar" style="width:0%"></div></div>
+          </div>
+        </aside>
+
+        <!-- Main content area -->
+        <div class="sp-main">
+
+          <!-- Overview section -->
+          <div class="sp-section" id="sp-overview">
+            <h1 class="sp-title" id="spTitle"></h1>
+            <p class="sp-subtitle" id="spSubtitle"></p>
+            <h3 class="sp-section-heading">Syllabus Topics</h3>
+            <ul class="sp-topic-list" id="spTopicList"></ul>
+          </div>
+
+          <!-- Notes section -->
+          <div class="sp-section hidden" id="sp-notes">
+            <h2 class="sp-section-heading">📝 My Notes</h2>
+            <div class="sp-block-list" id="spBlockList"></div>
+            <div class="add-block-bar">
+              <button class="add-block-btn" data-sptype="text">+ Text</button>
+              <button class="add-block-btn" data-sptype="bullet">+ List</button>
+              <button class="add-block-btn" data-sptype="heading">+ Heading</button>
+              <button class="add-block-btn" data-sptype="divider">+ Divider</button>
+            </div>
+          </div>
+
+          <!-- Questions + AI Tutor section -->
+          <div class="sp-section hidden" id="sp-questions">
+            <h2 class="sp-section-heading">❓ Questions & AI Tutor</h2>
+            <div class="sp-qa-chat" id="spQaChat">
+              <div class="sp-qa-welcome">
+                <span class="sp-qa-icon">🤖</span>
+                <p>Ask me anything about <strong id="spQaSubjectName"></strong> — I'll explain it clearly.</p>
+              </div>
+            </div>
+            <div class="sp-qa-input-row">
+              <input type="text" class="sp-qa-input" id="spQaInput" placeholder="Ask a question about this subject…"/>
+              <button class="save-btn sp-qa-send" id="spQaSend">Ask ✦</button>
+            </div>
+          </div>
+
+          <!-- Resources section -->
+          <div class="sp-section hidden" id="sp-resources">
+            <h2 class="sp-section-heading">🔗 Resources</h2>
+            <ul class="resource-list" id="spResourceList"></ul>
+            <div class="add-resource" style="margin-top:1rem">
+              <input type="text" id="spResourceName" placeholder="Resource name…" />
+              <input type="url" id="spResourceUrl" placeholder="Paste link…" />
+              <button id="spAddResourceBtn">Add</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Watermark -->
+  <div class="watermark">✦ by adriana · 2025–2026</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
